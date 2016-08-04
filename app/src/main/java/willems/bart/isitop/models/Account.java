@@ -27,4 +27,9 @@ public class Account {
     public void setPassword(String password) { this.password = password; }
     public void setSalt(String salt) { this.salt = salt; }
     public void setAdmin(boolean admin) { this.admin = admin; }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }
