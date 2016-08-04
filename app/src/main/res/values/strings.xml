@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Is it op?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="passwordLabel">Password</string>
+    <string name="usernameLabel">Username</string>
+    <string name="welcome_user">Welcome, </string>
+</resources>
