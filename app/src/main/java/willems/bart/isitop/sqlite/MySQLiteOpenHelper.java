@@ -37,6 +37,10 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         String CREATE_USER_TABLE = "CREATE TABLE " + TBL_ACCOUNTS_NAME + " ( id INT PRIMARY KEY AUTOINCREMENT, " + TBL_ACCOUNTS_KEY_NAME +  "STRING PRIMARY KEY,  password STRING, salt STRING )";
         db.execSQL(CREATE_USER_TABLE);
 
+        // Insert default value
+        String INSERT_ADMIN_ACCOUNT = "INSERT INTO TABLE " + TBL_ACCOUNTS_NAME + "VALUES ('0','admin','84290318E30673AF244E3C69D0E1F16CCD31186B015FE8D21D41E2305461B3A7228E3DEC956DF3AE363978B7EBEFACD6A03A7EA53B797A9623DD6248B2D9B202','saltySaltOhManSoSalty','1');";
+        db.execSQL(INSERT_ADMIN_ACCOUNT);
+
         // Create asset table
         String CREATE_ASSET_TABLE = "CREATE TABLE " + TBL_ASSETS_NAME + " ( id INT PRIMARY KEY AUTOINCREMENT, " + TBL_ASSETS_KEY_NAME +  "STRING PRIMARY KEY,  amount INT)";
         db.execSQL(CREATE_ASSET_TABLE);
@@ -66,7 +70,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     {
         List<Account> accounts = new LinkedList<Account>();
 
-        String query = "SELECT username, admin FROM " + TBL_ACCOUNTS_NAME;
+        String query = "SELECT username, FROM " + TBL_ACCOUNTS_NAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -82,6 +86,28 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         }
 
         return accounts;
+    }
+
+    public Account getAccountByUsername(String username)
+    {
+        String query = "SELECT username,  password, salt FROM " + TBL_ACCOUNTS_NAME + "WHERE username=" + username + " LIMIT 1";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        Account a = null;
+        if(cursor.moveToFirst()) {
+            do {
+                a = new Account();
+                a.setId(Integer.parseInt(cursor.getString(0)));
+                a.setUsername(cursor.getString(1));
+                a.setPassword(cursor.getString(2));
+                a.setSalt(cursor.getString(3));
+
+            } while (cursor.moveToNext());
+        }
+
+        return a;
     }
 
     // Assets

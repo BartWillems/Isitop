@@ -18,6 +18,8 @@ public class Account {
 
     public int getId() { return id; }
     public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public String getSalt() { return salt; }
     public boolean getAdmin() { return admin; }
 
     public void setId(int id) { this.id = id; }
