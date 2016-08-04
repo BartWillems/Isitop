@@ -5,7 +5,7 @@ package willems.bart.isitop.models;
  */
 public class Account {
 
-    public Account(String username, String password, boolean admin)
+    public Account()
     {
 
     }
