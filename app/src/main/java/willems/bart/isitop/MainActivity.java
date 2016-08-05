@@ -19,7 +19,7 @@ import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
 
 
 public class MainActivity extends AppCompatActivity {
-    public final static String LOGIN_USERNAME = "com.example.Isitop.MESSAGE";
+    public final static String LOGIN_USERNAME = "willems.bart.isitop.MainActivity";
     private MySQLiteOpenHelper  db;
     private SQLiteDatabase sqLiteDatabase;
 
