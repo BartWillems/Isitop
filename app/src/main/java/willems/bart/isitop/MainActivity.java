@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
             a.setSalt("saltySaltOhManSoSalty");
             a.setAdmin(1);
             db.addAccount(a);
-            //db.onCreate(sqLiteDatabase);
         }
     }
 
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     if(result != null && result.equals(account.getPassword()))
                     {
                         // User is authenticated
-                        Intent intent = new Intent(this, LoginActivity.class);
+                        Intent intent = new Intent(this, MenuActivity.class);
 
                         intent.putExtra(LOGIN_USERNAME, loginUsername);
                         startActivity(intent);
