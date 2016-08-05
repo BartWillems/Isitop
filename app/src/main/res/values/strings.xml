@@ -4,4 +4,10 @@
     <string name="passwordLabel">Password</string>
     <string name="usernameLabel">Username</string>
     <string name="welcome_user">Welcome, </string>
+    <string name="title_activity_menu">MenuActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
