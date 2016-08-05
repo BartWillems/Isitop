@@ -3,6 +3,7 @@ package willems.bart.isitop;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteOpenHelper(this);
         if(isFirstLaunch())
         {
+            Account a =  new Account();
+            a.setUsername("admin");
+            a.setPassword("43903b84d9ee3db3e2b6048728588f877d9ea07e430a506c0585ead964e4d0b157e301b319de8ff3d1ad7621deff1e2c3679febd97f586e8746d7f25e6b14ab7");
+            a.setSalt("saltySaltOhManSoSalty");
+            a.setAdmin(1);
+            db.addAccount(a);
             //db.onCreate(sqLiteDatabase);
         }
     }
@@ -41,14 +48,22 @@ public class MainActivity extends AppCompatActivity {
         EditText passwordText = (EditText) findViewById(R.id.login_password);
         String loginPassword = passwordText.getText().toString();
 
+        //In case the user enters wrong info
+        TextView username_label =  (TextView) findViewById(R.id.username_label);
+        username_label.setTextColor(Color.RED);
+
+        TextView password_label =  (TextView) findViewById(R.id.password_label);
+        password_label.setTextColor(Color.RED);
+
         if(!loginUsername.equals(null) && !loginUsername.isEmpty())
         {
             if(!loginPassword.equals(null) && !loginPassword.isEmpty())
             {
                 db = new MySQLiteOpenHelper(this);
-                Account account = db.getAccountByUsername(loginUsername); //crashes the coed
+                Account account = db.getAccountByUsername(loginUsername);
                 if(account != null)
                 {
+                    username_label.setText("");
                     String result = getSHA512Password(
                             loginPassword,
                             account.getSalt()
@@ -60,7 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
                         intent.putExtra(LOGIN_USERNAME, loginUsername);
                         startActivity(intent);
+                    } else {
+                        password_label.setText("ERROR: Wrong password");
                     }
+                } else {
+                    username_label.setText("ERROR: Unknown username");
                 }
             }
         }

@@ -36,16 +36,16 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create user table
         String CREATE_USER_TABLE = "CREATE TABLE " + TBL_ACCOUNTS_NAME +
-                " ( "
-                + " username STRING PRIMARY KEY,"
+                " ( id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + " username STRING UNIQUE,"
                 + " password STRING, "
                 + " salt STRING, "
                 + " admin INTEGER )";
         db.execSQL(CREATE_USER_TABLE);
 
         // Insert default value
-        String INSERT_ADMIN_ACCOUNT = "INSERT INTO " + TBL_ACCOUNTS_NAME + " VALUES ('admin','43903b84d9ee3db3e2b6048728588f877d9ea07e430a506c0585ead964e4d0b157e301b319de8ff3d1ad7621deff1e2c3679febd97f586e8746d7f25e6b14ab7','saltySaltOhManSoSalty','1');";
-        db.execSQL(INSERT_ADMIN_ACCOUNT);
+        //String INSERT_ADMIN_ACCOUNT = "INSERT INTO " + TBL_ACCOUNTS_NAME + " VALUES ('admin','43903b84d9ee3db3e2b6048728588f877d9ea07e430a506c0585ead964e4d0b157e301b319de8ff3d1ad7621deff1e2c3679febd97f586e8746d7f25e6b14ab7','saltySaltOhManSoSalty','1');";
+        //db.execSQL(INSERT_ADMIN_ACCOUNT);
 
         // Create asset table
         String CREATE_ASSET_TABLE = "CREATE TABLE " + TBL_ASSETS_NAME + " ( id INTEGER PRIMARY KEY AUTOINCREMENT, " + TBL_ASSETS_KEY_NAME +  "STRING ,  amount INT)";
@@ -66,6 +66,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
         cv.put(TBL_ACCOUNTS_KEY_NAME, a.getUsername());
+        cv.put("password", a.getPassword());
+        cv.put("salt", a.getSalt());
+        cv.put("admin", a.getAdmin());
 
         long id = db.insert(TBL_ACCOUNTS_NAME, null, cv);
         db.close();
@@ -85,7 +88,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 a = new Account();
-                a.setUsername(cursor.getString(0));
+                a.setId(Integer.parseInt(cursor.getString(0)));
+                a.setUsername(cursor.getString(1));
                 accounts.add(a);
             } while (cursor.moveToNext());
         }
@@ -95,7 +99,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     public Account getAccountByUsername(String username)
     {
-        String query = "SELECT username,  password, salt FROM " + TBL_ACCOUNTS_NAME + " WHERE username=" + username + " LIMIT 1";
+        String query = "SELECT username,  password, salt FROM " + TBL_ACCOUNTS_NAME + " WHERE username  =  '" + username + "' LIMIT 1";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -104,10 +108,10 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 a = new Account();
+                //a.setId(Integer.parseInt(cursor.getString(0)));
                 a.setUsername(cursor.getString(0));
                 a.setPassword(cursor.getString(1));
                 a.setSalt(cursor.getString(2));
-                Log.d("Got account? ",a.toString()); //No account??
 
             } while (cursor.moveToNext());
         }

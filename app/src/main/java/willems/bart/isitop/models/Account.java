@@ -14,19 +14,19 @@ public class Account {
     private String username;
     private String password;
     private String salt;
-    private boolean admin;
+    private int admin;
 
     public int getId() { return id; }
     public String getUsername() { return username; }
     public String getPassword() { return password; }
     public String getSalt() { return salt; }
-    public boolean getAdmin() { return admin; }
+    public int getAdmin() { return admin; }
 
     public void setId(int id) { this.id = id; }
     public void setUsername(String username) { this.username = username; }
     public void setPassword(String password) { this.password = password; }
     public void setSalt(String salt) { this.salt = salt; }
-    public void setAdmin(boolean admin) { this.admin = admin; }
+    public void setAdmin(int admin) { this.admin = admin; }
 
     @Override
     public String toString() {
