@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import willems.bart.isitop.models.Account;
 import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
 
@@ -22,12 +20,22 @@ public class MainActivity extends AppCompatActivity {
     public final static String LOGIN_USERNAME = "willems.bart.isitop.MainActivity";
     private MySQLiteOpenHelper  db;
     private SQLiteDatabase sqLiteDatabase;
+    static NotificationCompat.Builder notification;
+    static android.app.NotificationManager nm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new MySQLiteOpenHelper(this);
+
+
+        // Start Service
+        nm = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notification = new NotificationCompat.Builder(this);
+        notification.setAutoCancel(false); // Show notification only once
+        Intent serviceIntent = new Intent(this, AssetIntentService.class);
+        startService(serviceIntent);
         if(isFirstLaunch())
         {
             Account a =  new Account();

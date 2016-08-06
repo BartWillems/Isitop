@@ -1,8 +1,5 @@
 package willems.bart.isitop;
 
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +9,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.Toast;
 
 import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
@@ -39,20 +33,26 @@ public class AssetIntentService extends Service {
 
         @Override
         public void handleMessage(Message msg) {
-            try {
-                Thread.sleep(500);
-                long timestamp = db.getLastAssetRecordTime();
-                boolean success = false;
-                if(timestamp >= 0)
-                    success = true;
-                else
-                    success = false;
-                willems.bart.isitop.NotificationManager n = new willems.bart.isitop.NotificationManager();
-                n.sendBeerNotification(success, MenuActivity.notification, MenuActivity.nm);
-            } catch(InterruptedException e) {
-                Thread.currentThread().interrupt();
+            while(true){
+                try {
+                    Thread.sleep(500);
+                    long timestamp = db.getLastAssetRecordTime();
+                    boolean success = false;
+                    if(timestamp >= 0)
+                        success = true;
+                    else
+                        success = false;
+                    willems.bart.isitop.NotificationManager n = new willems.bart.isitop.NotificationManager();
+                    try{
+                        n.sendBeerNotification(success, MainActivity.notification, MainActivity.nm);
+                    } catch( NullPointerException e){
+                        // app is closed
+                    }
+                } catch(InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    stopSelf(msg.arg1);
+                }
             }
-            stopSelf(msg.arg1);
         }
     }
 
@@ -75,7 +75,7 @@ public class AssetIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         Message msg = mServiceHandler.obtainMessage();
         msg.arg1 = startId;
@@ -93,6 +93,6 @@ public class AssetIntentService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
     }
 }

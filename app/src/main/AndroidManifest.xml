@@ -27,11 +27,11 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <service
-            android:name=".AssetIntentService" >
-        </service>
+        <service android:name=".AssetIntentService"></service>
+
+        <activity android:name=".AddBeer"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package willems.bart.isitop;
 
+import android.app.Notification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ public class NotificationManager extends AppCompatActivity{
             notification.setContentText("It seems like we ran out of beer :o Go to the store!");
         }
         synchronized (nm){
+            notification.setOngoing(true); // can not swipe until you buy the bear
             nm.notify(uniqueID, notification.build());
         }
 

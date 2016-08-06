@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static NotificationCompat.Builder notification;
-    static android.app.NotificationManager nm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +61,6 @@ public class MenuActivity extends AppCompatActivity
         TextView usernameText = (TextView) hView.findViewById(R.id.username);
         usernameText.setText(username);
 
-        // Start Service
-        nm = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notification = new NotificationCompat.Builder(this);
-        notification.setAutoCancel(false); // Show notification only once
-        Intent serviceIntent = new Intent(this, AssetIntentService.class);
-        startService(serviceIntent);
     }
 
     @Override
