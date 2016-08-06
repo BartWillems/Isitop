@@ -22,7 +22,15 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase sqLiteDatabase;
     static NotificationCompat.Builder notification;
     static android.app.NotificationManager nm;
+    private LoginManager loginManager;
 
+
+    public void startBeerService(android.app.NotificationManager nm){
+        notification = new NotificationCompat.Builder(this);
+        notification.setAutoCancel(false); // Show notification only once
+        Intent serviceIntent = new Intent(this, AssetIntentService.class);
+        startService(serviceIntent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +38,15 @@ public class MainActivity extends AppCompatActivity {
         db = new MySQLiteOpenHelper(this);
 
 
-        // Start Service
         nm = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notification = new NotificationCompat.Builder(this);
-        notification.setAutoCancel(false); // Show notification only once
-        Intent serviceIntent = new Intent(this, AssetIntentService.class);
-        startService(serviceIntent);
+
+        if(loginManager.isLoggedIn()){
+            startBeerService(nm);
+            Intent intent = new Intent(this, MenuActivity.class);
+            intent.putExtra(LOGIN_USERNAME, loginManager.whoIsLoggedIn());
+            startActivity(intent);
+        }
+
         if(isFirstLaunch())
         {
             Account a =  new Account();
@@ -77,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                     );
                     if(result != null && result.equals(account.getPassword()))
                     {
+                        loginManager.logIn(loginUsername);
+                        startBeerService(nm);
+
                         // User is authenticated
                         Intent intent = new Intent(this, MenuActivity.class);
 

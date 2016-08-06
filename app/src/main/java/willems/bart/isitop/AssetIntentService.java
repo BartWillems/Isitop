@@ -35,7 +35,7 @@ public class AssetIntentService extends Service {
         public void handleMessage(Message msg) {
             while(true){
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(5000); // Sleep for 5 seconds
                     long timestamp = db.getLastAssetRecordTime();
                     boolean success = false;
                     if(timestamp >= 0)
