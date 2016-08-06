@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_shoppingCart"
+            android:title="@string/shoppingCart" />
+        <item
+            android:id="@+id/nav_addBeer"
+            android:title="@string/addBeer" />
+    </group>
+
+    <item android:title="@string/settings">
+        <menu>
+            <item
+                android:id="@+id/nav_accountSettings"
+                android:title="@string/accountSettings" />
+            <item
+                android:id="@+id/nav_addAccount"
+                android:title="@string/addAccount" />
+            <item
+                android:id="@+id/nav_logOut"
+                android:title="@string/logOut" />
+        </menu>
+    </item>
+
+
+</menu>

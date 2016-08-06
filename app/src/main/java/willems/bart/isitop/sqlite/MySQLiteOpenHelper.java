@@ -43,13 +43,26 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
                 + " admin INTEGER )";
         db.execSQL(CREATE_USER_TABLE);
 
-        // Insert default value
-        //String INSERT_ADMIN_ACCOUNT = "INSERT INTO " + TBL_ACCOUNTS_NAME + " VALUES ('admin','43903b84d9ee3db3e2b6048728588f877d9ea07e430a506c0585ead964e4d0b157e301b319de8ff3d1ad7621deff1e2c3679febd97f586e8746d7f25e6b14ab7','saltySaltOhManSoSalty','1');";
-        //db.execSQL(INSERT_ADMIN_ACCOUNT);
-
         // Create asset table
-        String CREATE_ASSET_TABLE = "CREATE TABLE " + TBL_ASSETS_NAME + " ( id INTEGER PRIMARY KEY AUTOINCREMENT, " + TBL_ASSETS_KEY_NAME +  "STRING ,  amount INT)";
+        String CREATE_ASSET_TABLE = "CREATE TABLE " + TBL_ASSETS_NAME +
+                " ( id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "assetName STRING UNIQUE,  " +
+                "amount INT)";
         db.execSQL(CREATE_ASSET_TABLE);
+
+        // Add trigger table, not to be confused with tumblr
+        String CREATE_MODFIICATION_TABLE =  "CREATE TABLE modifications(" +
+                "tableName STRING NOT NULL PRIMARY KEY ON CONFLICT REPLACE," +
+                "action TEXT NOT NULL," +
+                "changedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+        db.execSQL(CREATE_MODFIICATION_TABLE);
+
+        // ditto ^
+        String CREATE_TRIGGER = "CREATE TRIGGER IF NOT EXISTS assetsOnUpdate AFTER UPDATE ON assets " +
+                " BEGIN " +
+                " INSERT INTO modifications (tableName, action) VALUES ('assets','UPDATE'); " +
+                " END";
+        db.execSQL(CREATE_TRIGGER);
     }
 
     @Override
@@ -71,6 +84,22 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         cv.put("admin", a.getAdmin());
 
         long id = db.insert(TBL_ACCOUNTS_NAME, null, cv);
+        db.close();
+        return id;
+    }
+
+    public long changePassword(String username, String password, String salt)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put(TBL_ACCOUNTS_KEY_NAME, username);
+        cv.put("password", password);
+        cv.put("salt", salt);
+
+        long id = db.update(TBL_ACCOUNTS_NAME, cv, "username='"+username+"'", null);
+
         db.close();
         return id;
     }
@@ -124,7 +153,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(TBL_ASSETS_KEY_NAME, a.getAssetName());
+        cv.put("assetName", a.getAssetName());
+        cv.put("amount", a.getAssetAmount());
 
         long id = db.insert(TBL_ASSETS_NAME, null, cv);
         db.close();
@@ -145,12 +175,33 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             do {
                 a = new Asset();
                 a.setId(Integer.parseInt(cursor.getString(0)));
+                a.setAssetName(cursor.getString(1));
+                a.setAssetAmount(Integer.parseInt(cursor.getString(2)));
 
                 assets.add(a);
             } while (cursor.moveToNext());
         }
 
         return assets;
+    }
+
+    public long getLastAssetRecordTime()
+    {
+        // Return the last value from the modification table
+        String query = "SELECT changedAt AS epoch FROM modifications DESC LIMIT 1";
+
+        long time = -1;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                time = cursor.getLong(0);
+            } while (cursor.moveToNext());
+        }
+
+        return time;
     }
 }
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Is it op?</string>
+    <string name="sign_in">Meld u aan</string>
+    <string name="passwordLabel">Paswoord</string>
+    <string name="usernameLabel">Gebruikersnaam</string>
+    <string name="welcome_user">Welkom, </string>
+    <string name="title_activity_menu">MenuActivity</string>
+
+    <string name="navigation_drawer_open">Open navigatie drawer</string>
+    <string name="navigation_drawer_close">Close navigatie drawer</string>
+
+    <string name="action_settings">Instellingen</string>
+
+    <string name="shoppingCart">Winkel kar</string>
+    <string name="addBeer">Koop bier</string>
+    <string name="settings">Instellingen</string>
+    <string name="accountSettings">Account instellingen</string>
+    <string name="addAccount">Voeg account toe</string>
+    <string name="logOut">Afmelden</string>
+
+    <string name="addBeer_label">Bier soort</string>
+    <string name="beerAmount_label">Hoeveelheid bier(L)</string>
+    <string name="addBeerOrderBtn">Voeg toe aan winkelkar</string>
+    <string name="changePasswordLabel">Paswoord veranderen</string>
+    <string name="currentPasswordLabel">Huidig Paswoord</string>
+    <string name="newPasswordLabel">Nieuw Paswoord</string>
+    <string name="repeatPasswordLabel">Herhaal Paswoord</string>
+    <string name="confirmPasswordBtn">Bevestig</string>
+</resources>
