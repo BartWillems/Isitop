@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -43,7 +44,9 @@ public class AddBeer extends AppCompatActivity {
         } else {
             intent.putExtra(ADD_BEER, "There was a problem adding your beer... You had one too many?");
         }
-
-        startActivity(intent);
+        setResult(RESULT_OK, null);
+        Intent refresh = new Intent(this, MenuActivity.class);
+        startActivity(refresh);
+        finish();
     }
 }

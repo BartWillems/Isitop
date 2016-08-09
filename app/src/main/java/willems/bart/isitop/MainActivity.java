@@ -1,8 +1,8 @@
 package willems.bart.isitop;
 
+import android.app.*;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import willems.bart.isitop.models.Account;
 import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
 
@@ -19,10 +17,9 @@ import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
 public class MainActivity extends AppCompatActivity {
     public final static String LOGIN_USERNAME = "willems.bart.isitop.MainActivity";
     private MySQLiteOpenHelper  db;
-    private SQLiteDatabase sqLiteDatabase;
     static NotificationCompat.Builder notification;
     static android.app.NotificationManager nm;
-    private LoginManager loginManager;
+    private static final int uniqueID = 1337699001;
 
 
     public void startBeerService(android.app.NotificationManager nm){
@@ -30,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         notification.setAutoCancel(false); // Show notification only once
         Intent serviceIntent = new Intent(this, AssetIntentService.class);
         startService(serviceIntent);
+    }
+
+    public void stopBeerService(android.app.NotificationManager notification){
+       Intent serviceIntent = new Intent(this, AssetIntentService.class);
+        stopService(serviceIntent);
+        notification.cancel(uniqueID);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
         nm = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if(loginManager.isLoggedIn()){
+
+        if(isLoggedIn()){
             startBeerService(nm);
             Intent intent = new Intent(this, MenuActivity.class);
-            intent.putExtra(LOGIN_USERNAME, loginManager.whoIsLoggedIn());
+            intent.putExtra(LOGIN_USERNAME, whoIsLoggedIn());
             startActivity(intent);
         }
 
@@ -82,20 +86,20 @@ public class MainActivity extends AppCompatActivity {
                 if(account != null)
                 {
                     username_label.setText("");
-                    String result = getSHA512Password(
+                    String result = Functions.getSHA512Password(
                             loginPassword,
                             account.getSalt()
                     );
                     if(result != null && result.equals(account.getPassword()))
                     {
-                        loginManager.logIn(loginUsername);
+                        logIn(loginUsername);
                         startBeerService(nm);
 
                         // User is authenticated
                         Intent intent = new Intent(this, MenuActivity.class);
 
                         intent.putExtra(LOGIN_USERNAME, loginUsername);
-                        startActivity(intent);
+                        startActivityForResult(intent, 0);
                     } else {
                         password_label.setText("ERROR: Wrong password");
                     }
@@ -103,6 +107,15 @@ public class MainActivity extends AppCompatActivity {
                     username_label.setText("ERROR: Unknown username");
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 0) {
+            finish();
+        } else {
+            stopBeerService(nm);
         }
     }
 
@@ -122,22 +135,33 @@ public class MainActivity extends AppCompatActivity {
         return isFirstLaunch;
     }
 
-    // Returns either SHA512 or null
-    public String getSHA512Password(String passwordToHash, String salt){
-        String passwordResult  = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt.getBytes());
-            byte[] bytes = md.digest(passwordToHash.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < bytes.length; i++) {
-               sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            passwordResult = sb.toString();
-        } catch(NoSuchAlgorithmException e) {
-             e.printStackTrace();
-        }
-        return passwordResult;
+    public void logIn(String username){
+        SharedPreferences launchPref = getSharedPreferences("isLoggedIn", 0);
+        SharedPreferences.Editor editor = launchPref.edit();
+        editor.putString("username",username);
+        editor.putBoolean("isLoggedIn",true);
+        editor.commit();
     }
+
+    public boolean isLoggedIn() {
+        boolean isLoggedIn = false;
+        SharedPreferences launchPref = getSharedPreferences("isLoggedIn", 0);
+        SharedPreferences.Editor editor = launchPref.edit();
+        if(launchPref.getBoolean("isLoggedIn",false)){
+            editor.putBoolean("isLoggedIn",true);
+            isLoggedIn = true;
+        } else {
+            editor.putBoolean("isLoggedIn",false);
+            isLoggedIn = false;
+        }
+        editor.commit();
+        return isLoggedIn;
+    }
+
+    public String whoIsLoggedIn(){
+        SharedPreferences launchPref = getSharedPreferences("isLoggedIn", 0);
+        return launchPref.getString("username", "unknown user");
+    }
+
 }
 

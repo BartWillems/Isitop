@@ -161,6 +161,15 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public boolean removeAsset (int id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        boolean result = db.delete(TBL_ASSETS_NAME, "id=" + id, null) > 0;
+        db.close();
+        return result;
+    }
+
     public List<Asset> getAssets()
     {
         List<Asset> assets = new LinkedList<Asset>();

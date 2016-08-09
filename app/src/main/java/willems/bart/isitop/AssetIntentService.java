@@ -12,6 +12,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
+import willems.bart.isitop.models.Asset;
 import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
 
 /**
@@ -33,21 +36,24 @@ public class AssetIntentService extends Service {
 
         @Override
         public void handleMessage(Message msg) {
+            willems.bart.isitop.NotificationManager n = new willems.bart.isitop.NotificationManager();
             while(true){
                 try {
-                    Thread.sleep(5000); // Sleep for 5 seconds
-                    long timestamp = db.getLastAssetRecordTime();
-                    boolean success = false;
-                    if(timestamp >= 0)
-                        success = true;
-                    else
-                        success = false;
-                    willems.bart.isitop.NotificationManager n = new willems.bart.isitop.NotificationManager();
-                    try{
-                        n.sendBeerNotification(success, MainActivity.notification, MainActivity.nm);
-                    } catch( NullPointerException e){
-                        // app is closed
+                    List<Asset> assets = db.getAssets();
+                    if(assets.size() > 0){
+                        try{
+                            n.sendBeerNotification(MainActivity.notification, MainActivity.nm);
+                        } catch( NullPointerException e){
+                            // app is closed
+                        }
+                    } else {
+                        try {
+                            n.removeBeerNotification(MainActivity.notification, MainActivity.nm);
+                        } catch( NullPointerException e){
+                            // wat
+                        }
                     }
+                    Thread.sleep(1000); // Sleep for 1 second
                 } catch(InterruptedException e) {
                     Thread.currentThread().interrupt();
                     stopSelf(msg.arg1);
