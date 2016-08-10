@@ -12,12 +12,21 @@
     tools:context="willems.bart.isitop.MenuActivity"
     tools:showIn="@layout/app_bar_menu">
 
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="willems.bart.isitop.ResponsibleDrinkingFragment"
+        android:id="@+id/fragment"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/button" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/orderResultLabel"
         android:layout_alignParentTop="true"
+        android:layout_below="@+id/fragment"
         android:layout_centerHorizontal="true" />
 
     <TableLayout

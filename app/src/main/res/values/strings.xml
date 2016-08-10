@@ -26,4 +26,24 @@
     <string name="newPasswordLabel">New Password</string>
     <string name="repeatPasswordLabel">Repeat Password</string>
     <string name="confirmPasswordBtn">Confirm</string>
+
+    <string name="fragment_label">Don\'t drink too much!</string>
+
+    <!-- Variables in the coed -->
+    <!-- MainActivity -->
+    <string name="wrongPasswordLabel">Wrong password!</string>
+    <string name="missingUserLabel">You don\t exist!</string>
+    <!-- MenuActivity -->
+    <string name="beerBoughtBtn">Bought!</string>
+    <string name="notificationTicker">BEER</string>
+    <string name="notificationTitle">No more beer!</string>
+    <string name="notificationText">It seems like we ran out of beer :o Go to the store!</string>
+    <!-- AddBeer -->
+    <string name="beerSuccess">Beer added successfully!</string>
+    <string name="beerFailure">There was a problem adding your beer... You had one too many?</string>
+    <!-- AccountSettings -->
+    <string name="passwordChangedSuccess">Your password is successfully changed</string>
+    <string name="passwordChangedMismatch">Your passwords don\t match</string>
+    <string name="passwordChangedWrong">The password you entered is wrong</string>
+    <string name="passwordChangedFubar">This doesn\'t make sens... Please contact your local open source developer</string>
 </resources>

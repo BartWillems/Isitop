@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra(LOGIN_USERNAME, loginUsername);
                         startActivityForResult(intent, 0);
                     } else {
-                        password_label.setText("ERROR: Wrong password");
+                        password_label.setText(getResources().getString(R.string.wrongPasswordLabel));
                     }
                 } else {
-                    username_label.setText("ERROR: Unknown username");
+                    username_label.setText(getResources().getString(R.string.missingUserLabel));
                 }
             }
         }

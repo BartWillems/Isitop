@@ -37,9 +37,10 @@ public class AssetIntentService extends Service {
         @Override
         public void handleMessage(Message msg) {
             willems.bart.isitop.NotificationManager n = new willems.bart.isitop.NotificationManager();
+            List<Asset> assets;
             while(true){
                 try {
-                    List<Asset> assets = db.getAssets();
+                    assets = db.getAssets();
                     if(assets.size() > 0){
                         try{
                             n.sendBeerNotification(MainActivity.notification, MainActivity.nm);
@@ -53,6 +54,7 @@ public class AssetIntentService extends Service {
                             // wat
                         }
                     }
+                    assets = null;
                     Thread.sleep(1000); // Sleep for 1 second
                 } catch(InterruptedException e) {
                     Thread.currentThread().interrupt();

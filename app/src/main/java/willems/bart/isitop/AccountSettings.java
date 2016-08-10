@@ -51,26 +51,26 @@ public class AccountSettings extends AppCompatActivity {
                     String passwordSalt = Functions.getSHA512Password(newPassword, salt);
                     long result  = db.changePassword(username, passwordSalt, salt);
 
-                    Toast.makeText(this, "Your password is now changed!",
+                    Toast.makeText(this, getResources().getString(R.string.passwordChangedSuccess),
                             Toast.LENGTH_LONG).show();
                     // Return to the menu
                     setResult(RESULT_OK, null);
                     finish();
                 } else {
                     //passwords don't match
-                    Toast.makeText(this, "Your passwords don't match",
+                    Toast.makeText(this, getResources().getString(R.string.passwordChangedMismatch),
                             Toast.LENGTH_LONG).show();
                     newPasswordText.setTextColor(Color.RED);
                     passwordRepeatText.setTextColor(Color.RED);
                 }
             } else {
                 // wrong password
-                Toast.makeText(this, "The password you entered is WRONG!!",
+                Toast.makeText(this, getResources().getString(R.string.passwordChangedWrong),
                         Toast.LENGTH_LONG).show();
                 currentPasswordText.setTextColor(Color.RED);
             }
         } else {
-            Toast.makeText(this, "This doesn't make sens... Please contact your local open source developer",
+            Toast.makeText(this, getResources().getString(R.string.passwordChangedFubar),
                     Toast.LENGTH_SHORT).show();
         }
     }

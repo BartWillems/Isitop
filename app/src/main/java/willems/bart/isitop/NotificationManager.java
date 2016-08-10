@@ -16,9 +16,11 @@ public class NotificationManager extends AppCompatActivity{
         notification.setSmallIcon(R.mipmap.ic_launcher);
         notification.setWhen(System.currentTimeMillis());
 
-        notification.setTicker("BEER");
-        notification.setContentTitle("NO MORE BEER");
-        notification.setContentText("It seems like we ran out of beer :o Go to the store!");
+
+
+        notification.setTicker(getResources().getString(R.string.notificationTicker));
+        notification.setContentTitle(getResources().getString(R.string.notificationTitle));
+        notification.setContentText(getResources().getString(R.string.notificationText));
 
         synchronized (nm){
             notification.setOngoing(true); // can not swipe until you buy the bear

@@ -40,9 +40,9 @@ public class AddBeer extends AppCompatActivity {
         long result = db.addAsset(asset);
         Intent intent = new Intent(this, MenuActivity.class);
         if(result >= 0){
-            intent.putExtra(ADD_BEER, "Beer added successfully!");
+            intent.putExtra(ADD_BEER, getResources().getString(R.string.beerSuccess));
         } else {
-            intent.putExtra(ADD_BEER, "There was a problem adding your beer... You had one too many?");
+            intent.putExtra(ADD_BEER, getResources().getString(R.string.beerFailure));
         }
         setResult(RESULT_OK, null);
         Intent refresh = new Intent(this, MenuActivity.class);

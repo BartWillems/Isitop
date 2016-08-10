@@ -9,13 +9,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="willems.bart.isitop.AddBeer">
 
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="willems.bart.isitop.ResponsibleDrinkingFragment"
+        android:id="@+id/fragment"
+        tools:layout="@layout/drink_responsible_fragment"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/fragment"
+        android:layout_marginTop="5dp"
         android:text="@string/addBeer_label"
         android:id="@+id/addBeer_label"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/beerName" />
 
     <EditText
@@ -55,4 +65,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:onClick="addOrder"/>
+
 </RelativeLayout>

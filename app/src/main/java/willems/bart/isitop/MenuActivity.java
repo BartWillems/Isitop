@@ -1,5 +1,6 @@
 package willems.bart.isitop;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -46,15 +48,6 @@ public class MenuActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -87,7 +80,7 @@ public class MenuActivity extends AppCompatActivity
 
         TextView beer;
         Button beerBtn;
-        int count = 1;
+        int count = 0;
         for(Asset a : assets){
             TableRow row = new TableRow(this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
@@ -96,12 +89,13 @@ public class MenuActivity extends AppCompatActivity
 
             beerBtn = new Button(this);
             beerBtn.setId(a.getId());
-            beerBtn.setText("Ok");
+            beerBtn.setText(R.string.beerBoughtBtn);
 
             beer = new TextView(this);
             beer.setTextColor(Color.BLACK);
             beer.setText(a.getAssetName() + " " + a.getAssetAmount() + "L");
             beer.setId(a.getId());
+            beer.setGravity(Gravity.LEFT);
 
             beerBtn.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v){
@@ -112,8 +106,9 @@ public class MenuActivity extends AppCompatActivity
                 }
             });
 
-            row.addView(beer);
-            row.addView(beerBtn);
+            row.addView(beer,(new TableRow.LayoutParams(0, ActionBar.LayoutParams.WRAP_CONTENT, 0.8f)));
+            row.addView(beerBtn,(new TableRow.LayoutParams(0, ActionBar.LayoutParams.WRAP_CONTENT, 0.8f)));
+            //row.addView(beerBtn);
             ll.addView(row,count);
             count++;
         }
@@ -136,21 +131,6 @@ public class MenuActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

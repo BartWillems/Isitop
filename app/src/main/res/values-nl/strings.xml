@@ -27,4 +27,25 @@
     <string name="newPasswordLabel">Nieuw Paswoord</string>
     <string name="repeatPasswordLabel">Herhaal Paswoord</string>
     <string name="confirmPasswordBtn">Bevestig</string>
+
+    <string name="fragment_label">Drink niet te veel!</string>
+
+
+    <!-- Variables in the coed -->
+    <!-- MainActivity -->
+    <string name="wrongPasswordLabel">Verkeerd paswoord</string>
+    <string name="missingUserLabel">Deze account bestaat niet</string>
+    <!-- MenuActivity -->
+    <string name="beerBoughtBtn">Gekocht!</string>
+    <string name="notificationTicker">BIER</string>
+    <string name="notificationTitle">Het bier is op!</string>
+    <string name="notificationText">Er is geen bier meer! Ga naar de winkel!</string>
+    <!-- AddBeer -->
+    <string name="beerSuccess">Bier sucesvol toegevoegd!</string>
+    <string name="beerFailure">Er was een probleem bij het toevoegen van een pintje...</string>
+    <!-- AccountSettings -->
+    <string name="passwordChangedSuccess">Uw paswoord is veranderd</string>
+    <string name="passwordChangedMismatch">Uw paswoorden komen niet overeen</string>
+    <string name="passwordChangedWrong">U heeft een verkeerd paswoord gegeven</string>
+    <string name="passwordChangedFubar">Dit klopt niet... Contacteer aub uw  lokale open sauce ontwikkelaar</string>
 </resources>
