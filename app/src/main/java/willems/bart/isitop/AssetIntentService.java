@@ -26,8 +26,6 @@ public class AssetIntentService extends Service {
     private ServiceHandler mServiceHandler;
     private static final String TAG = "willems.bart.isitop";
     private MySQLiteOpenHelper db;
-    private SQLiteDatabase sqLiteDatabase;
-
 
     private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper){
@@ -37,24 +35,26 @@ public class AssetIntentService extends Service {
         @Override
         public void handleMessage(Message msg) {
             willems.bart.isitop.NotificationManager n = new willems.bart.isitop.NotificationManager();
-            List<Asset> assets;
-            while(true){
+            boolean service = true;
+            while(service){
                 try {
-                    assets = db.getAssets();
+                    List<Asset> assets = db.getAssets();
                     if(assets.size() > 0){
                         try{
                             n.sendBeerNotification(MainActivity.notification, MainActivity.nm);
                         } catch( NullPointerException e){
+                            e.printStackTrace();
+                            service = false;
                             // app is closed
                         }
                     } else {
                         try {
-                            n.removeBeerNotification(MainActivity.notification, MainActivity.nm);
+                            n.removeBeerNotification(MainActivity.nm);
                         } catch( NullPointerException e){
                             // wat
+                            service=false;
                         }
                     }
-                    assets = null;
                     Thread.sleep(1000); // Sleep for 1 second
                 } catch(InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -83,7 +83,7 @@ public class AssetIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         Message msg = mServiceHandler.obtainMessage();
         msg.arg1 = startId;

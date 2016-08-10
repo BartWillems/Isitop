@@ -3,11 +3,8 @@ package willems.bart.isitop;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,17 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import java.util.List;
-import java.util.concurrent.ThreadFactory;
-
 import willems.bart.isitop.models.Asset;
 import willems.bart.isitop.sqlite.MySQLiteOpenHelper;
 
@@ -108,7 +99,6 @@ public class MenuActivity extends AppCompatActivity
 
             row.addView(beer,(new TableRow.LayoutParams(0, ActionBar.LayoutParams.WRAP_CONTENT, 0.8f)));
             row.addView(beerBtn,(new TableRow.LayoutParams(0, ActionBar.LayoutParams.WRAP_CONTENT, 0.8f)));
-            //row.addView(beerBtn);
             ll.addView(row,count);
             count++;
         }

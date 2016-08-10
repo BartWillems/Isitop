@@ -1,6 +1,5 @@
 package willems.bart.isitop;
 
-import android.app.*;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -24,7 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void startBeerService(android.app.NotificationManager nm){
         notification = new NotificationCompat.Builder(this);
-        notification.setAutoCancel(false); // Show notification only once
+        notification.setAutoCancel(true); // Show notification only once
+        CharSequence ticker = getString(R.string.notificationTicker);
+        notification.setTicker(getResources().getString(R.string.notificationTicker));
+        notification.setContentTitle(getResources().getString(R.string.notificationTitle));
+        notification.setContentText(getResources().getString(R.string.notificationText));
         Intent serviceIntent = new Intent(this, AssetIntentService.class);
         startService(serviceIntent);
     }
